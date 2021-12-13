@@ -3,46 +3,83 @@
 		const repository = page.params.repository;
 		const folder = page.params.folder;
 
+		let items = [];
+		let file = "";
+
 		const res = await fetch(`/api/${folder}`);
 
-		const items = await res.json();
+		let regex = /\\*\./;
+		const isFile = regex.test(folder)
+		if (isFile){
+			file = await res.text();
+		} else {
+			items = await res.json();
+		}
+
 
 		//convert folder to array
 		//const pathArray = folder.split('/');
 		
 		if (res.ok) {
-			return { props: { items, repository, folder } };
+			return { props: { items, repository, folder, file, isFile } };
 		}
 		return {
 			status: res.status,
-			error: new Error(`Could not load ${url}`)
+			error: new Error(`Could not load ${folder}`)
 		};
 	}
 </script>
 
 <script>
+	//TODO: na apofasisw an thelw na kanw fetch ta items ston server kai na
+	//      epistrefw mazi thn istoselida h na ta kanw fetch apo to
+	//      client kai na kanw await blocks
+
 	export let repository;
 	export let folder;
-	$: folderArr = folder.split('/');
-	console.log("this is: " + folderArr)
 	export let items;
+	export let file;
+	export let isFile;
+
+	function itemIsFile(fileName) {
+		const regex = /\\*\./;
+		return regex.test(fileName)
+	}
+
+	$: folderArr = folder.split('/');
 </script>
 
 <div class="mt-5">
 	<main class="flex flex-col sm:rounded-lg p-4 mx-auto sm:max-w-lg bg-gray-800">
 		<h1 class="text-3xl font-bold mb-2">
 			<a class="hover:text-gray-400" href="/downloads/{repository}">{repository}</a> /
-		<!-- I should fond a better if statement -->
-		{#if folderArr[0] != ""}
-			{#each folderArr as folderItem}
-				&ensp;<a class="hover:text-gray-400" href="/downloads/{repository}/{folderArr[0]}">{folderItem}</a>&ensp;/
+			<!-- I should fond a better if statement -->
+			{#if folderArr[0] != ""}
+				{#each folderArr as folderItem}
+					&ensp;<a class="hover:text-gray-400" href="/downloads/{repository}/{folderArr[0]}">{folderItem}</a>&ensp;/
+				{/each}
+			{/if}
+		</h1>
+		{#if isFile}
+		<pre class="whitespace-pre-wrap">{file}</pre>
+		{:else}
+			{#each items as item} 
+				{#if itemIsFile(item)}
+					<a 
+						class="text-xl hover:text-gray-300"
+						target="_blank" 
+						href="http://localhost:3001/{folder}/{item}" 
+					 >
+						📃{item}
+					</a>
+				{:else}
+					<a
+						class="text-xl hover:text-gray-300"
+						href="/downloads/{repository}/{folder ? folder+"/" : ""}{item}">
+						📁{item}
+					</a>
+				{/if}
 			{/each}
 		{/if}
-		</h1>
-		{#each items as item} 
-			<a
-				class="text-xl hover:text-gray-300"
-				href="/downloads/{repository}/{folder ? folder+"/" : ""}{item}">📁 {item}</a>
-		{/each}
 	</main>
 </div>
