@@ -31,6 +31,8 @@
 </script>
 
 <script>
+	import Card from "$lib/Card.svelte";
+
 	//TODO: na apofasisw an thelw na kanw fetch ta items ston server kai na
 	//      epistrefw mazi thn istoselida h na ta kanw fetch apo to
 	//      client kai na kanw await blocks
@@ -49,37 +51,35 @@
 	$: folderArr = folder.split('/');
 </script>
 
-<div class="mt-5">
-	<main class="flex flex-col sm:rounded-lg p-4 mx-auto sm:max-w-lg bg-gray-800">
-		<h1 class="text-3xl font-bold mb-2">
-			<a class="hover:text-gray-400" href="/downloads/{repository}">{repository}</a> /
-			<!-- I should fond a better if statement -->
-			{#if folderArr[0] != ""}
-				{#each folderArr as folderItem}
-					&ensp;<a class="hover:text-gray-400" href="/downloads/{repository}/{folderArr[0]}">{folderItem}</a>&ensp;/
-				{/each}
-			{/if}
-		</h1>
-		{#if isFile}
-		<pre class="whitespace-pre-wrap">{file}</pre>
-		{:else}
-			{#each items as item} 
-				{#if itemIsFile(item)}
-					<a 
-						class="text-xl hover:text-gray-300"
-						target="_blank" 
-						href="http://localhost:3001/{folder}/{item}" 
-					 >
-						📃{item}
-					</a>
-				{:else}
-					<a
-						class="text-xl hover:text-gray-300"
-						href="/downloads/{repository}/{folder ? folder+"/" : ""}{item}">
-						📁{item}
-					</a>
-				{/if}
+<Card>
+	<h1 class="text-3xl font-bold mb-2">
+		<a class="hover:text-gray-400" href="/downloads/{repository}">{repository}</a> /
+		<!-- I should fond a better if statement -->
+		{#if folderArr[0] != ""}
+			{#each folderArr as folderItem}
+				&ensp;<a class="hover:text-gray-400" href="/downloads/{repository}/{folderArr[0]}">{folderItem}</a>&ensp;/
 			{/each}
 		{/if}
-	</main>
-</div>
+	</h1>
+	{#if isFile}
+	<pre class="whitespace-pre-wrap">{file}</pre>
+	{:else}
+		{#each items as item} 
+			{#if itemIsFile(item)}
+				<a 
+					class="text-xl hover:text-gray-300"
+					target="_blank" 
+					href="http://localhost:3001/{folder}/{item}" 
+				 >
+					📃{item}
+				</a>
+			{:else}
+				<a
+					class="text-xl hover:text-gray-300"
+					href="/downloads/{repository}/{folder ? folder+"/" : ""}{item}">
+					📁{item}
+				</a>
+			{/if}
+		{/each}
+	{/if}
+</Card>
