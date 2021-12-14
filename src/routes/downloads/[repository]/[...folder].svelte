@@ -89,5 +89,5 @@
 			{/if}
 		{/each}
 	{/if}
-	<FileInput />
+	<FileInput path={folder}/>
 </Card>
