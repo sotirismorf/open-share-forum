@@ -2,4 +2,5 @@ html {
 	background: #666666;
 	color: #eee;
 	height: 100%;
+	-webkit-tap-highlight-color: transparent;
 }

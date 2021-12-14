@@ -1,12 +1,13 @@
 <script>
 	const navigation = [
-		{ name: 'Downloads', href: '/downloads', current: false },
-		{ name: 'About', href: '/about', current: false },
+			{ name: 'Home', href: '/', current: false, prefix: '🏠'},
+		{ name: 'Downloads', href: '/downloads', current: false, prefix: '🌐' },
+		{ name: 'About', href: '/about', current: false, prefix: 'ℹ️' },
 	]
 </script>
 
 <!-- This example requires Tailwind CSS v2.0+ -->
-<nav class="bg-gray-800">
+<nav class="bg-gray-800 select-none">
 	<div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
 		<div class="relative flex items-center justify-between h-16">
 			<div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
@@ -33,3 +34,14 @@
 		</div>
 	</div>
 </nav>
+
+<div class="w-full absolute bottom-0 sm:hidden bg-gray-800 h-16 inline-flex justify-center p-2 gap-2">
+	{#each navigation as item}
+		<a
+			href={item.href}
+				class="text-center bg-gray-700 flex-1 pt-3 rounded-md font-bold text-l select-none active:bg-gray-500"
+		>
+			{item.name}
+		</a>
+	{/each}
+</div>

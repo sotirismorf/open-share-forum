@@ -13,8 +13,9 @@
 	<h1 class="text-3xl font-bold mb-2">Downloads</h1>
 	{#each repositories as repo} 
 		<a
-			class="text-xl"
-			href="downloads/{repo.href}">🔥 {repo.title}</a>
+			class="text-xl overflow-ellipsis overflow-hidden flex"
+			href="downloads/{repo.href}">
+			<span class="mr-1">🔥</span><p>{repo.title}</p></a>
 	{/each}
 </Card>
 

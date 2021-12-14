@@ -3,8 +3,7 @@
 		const repository = page.params.repository;
 		const folder = page.params.folder;
 
-		let items = [];
-		let file = "";
+		let items, file;
 
 		const res = await fetch(`/api/${folder}`);
 
@@ -32,6 +31,7 @@
 
 <script>
 	import Card from "$lib/Card.svelte";
+	import FileInput from "$lib/FileInput.svelte";
 
 	//TODO: na apofasisw an thelw na kanw fetch ta items ston server kai na
 	//      epistrefw mazi thn istoselida h na ta kanw fetch apo to
@@ -52,7 +52,7 @@
 </script>
 
 <Card>
-	<h1 class="text-3xl font-bold mb-2">
+	<h1 class="text-2xl font-bold mb-2">
 		<a class="hover:text-gray-400" href="/downloads/{repository}">{repository}</a> /
 		<!-- I should fond a better if statement -->
 		{#if folderArr[0] != ""}
@@ -64,22 +64,23 @@
 	{#if isFile}
 	<pre class="whitespace-pre-wrap">{file}</pre>
 	{:else}
-		{#each items as item} 
+		{#each items as item}
 			{#if itemIsFile(item)}
-				<a 
+				<a
 					class="text-xl hover:text-gray-300"
 					target="_blank" 
 					href="http://localhost:3001/{folder}/{item}" 
 				 >
-					📃{item}
+					📃 {item}
 				</a>
 			{:else}
 				<a
 					class="text-xl hover:text-gray-300"
 					href="/downloads/{repository}/{folder ? folder+"/" : ""}{item}">
-					📁{item}
+					📁 {item}
 				</a>
 			{/if}
 		{/each}
 	{/if}
+	<FileInput />
 </Card>
