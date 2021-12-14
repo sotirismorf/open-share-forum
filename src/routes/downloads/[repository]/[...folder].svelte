@@ -4,27 +4,27 @@
 		const folder = page.params.folder;
 
 		let items, file;
+		//console.log("Folder:"+folder+"endfolder")
 
-		const res = await fetch(`/api/${folder}`);
-
-		let regex = /\\*\./;
-		const isFile = regex.test(folder)
-		if (isFile){
-			file = await res.text();
-		} else {
-			items = await res.json();
-		}
+		const res = await fetch(folder ? `/api/${folder}` : `/api`);
 
 
-		//convert folder to array
-		//const pathArray = folder.split('/');
+		//let regex = /\\*\./;
+		//const isFile = regex.test(folder)
+		//if (isFile){
+		//	file = await res.text();
+		//} else {
+		//	//console.log(res)
+		//	items = await res.json();
+		//}
+		const isFile= false
 		
 		if (res.ok) {
-			return { props: { items, repository, folder, file, isFile } };
+			return { props: { items: await res.json(), repository, folder, file, isFile } };
 		}
 		return {
 			status: res.status,
-			error: new Error(`Could not load ${folder}`)
+			error: new Error(`Could not load folder`)
 		};
 	}
 </script>
@@ -42,7 +42,7 @@
 	export let items;
 	export let file;
 	export let isFile;
-
+	
 	function itemIsFile(fileName) {
 		const regex = /\\*\./;
 		return regex.test(fileName)
