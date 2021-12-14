@@ -64,6 +64,13 @@
 	{#if isFile}
 	<pre class="whitespace-pre-wrap">{file}</pre>
 	{:else}
+		{#if items.length==0}
+			<div class="my-24 text-center">
+			
+			<h1 class="text-3xl font-bold">This directory is empty... 😅</h1>
+			<p class="text-3xl mt-5">You can help by uploading a file!</p>
+			</div>
+		{/if}
 		{#each items as item}
 			{#if itemIsFile(item)}
 				<a
