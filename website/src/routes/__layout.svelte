@@ -1,7 +1,19 @@
 <script>
+  	import { ApolloClient, InMemoryCache } from "@apollo/client/core";
+  	import { setClient } from "svelte-apollo";
+
+	import Nav from './Nav.svelte'
 	import '../app.css'
 	import '../tailwind.css'
-	import Nav from './Nav.svelte'
+
+ 
+  	// 1. Create an Apollo client and pass it to all child components
+  	//    (uses svelte's built-in context)
+  	const client = new ApolloClient({
+		uri: 'http://localhost:4000',
+		cache: new InMemoryCache()
+  	});
+  	setClient(client);
 </script>
 
 <Nav />
