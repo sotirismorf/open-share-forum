@@ -76,7 +76,7 @@
 				<a
 					class="text-xl hover:text-gray-300"
 					target="_blank" 
-					href="http://localhost:3001/{folder}/{item}" 
+					href="http://localhost:3001/download/{folder}/{item}" 
 				 >
 					📃 {item}
 				</a>

@@ -32,7 +32,7 @@
 	}
 </script>
 
-<div>
+<form>
 	<div
 		class="inline-block mt-5 chan bg-gray-200 text-gray-800 p-2 rounded-md font-bold hover:bg-gray-400 cursor-pointer active:bg-gray-300 duration-100"
 		on:click={() => {fileinput.click();}}
@@ -45,8 +45,8 @@
 		<button on:click={upload} class="bg-green-600 py-2 px-4 rounded-md hover:bg-green-700 text-gray-800 font-bold">Enter</button>
 	{/if}
 	
-</div>
+<input style="display:none" type="file" accept=".pdf, .txt, .jpg, .jpeg, .png" on:change={(e)=>onFileSelected(e)} bind:this={fileinput} >
+</form>
 	
 
-<input style="display:none" type="file" accept=".jpg, .jpeg, .png" on:change={(e)=>onFileSelected(e)} bind:this={fileinput} >
 
