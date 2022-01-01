@@ -18,7 +18,7 @@ const typeDefs = gql`
     title: String!
     body: String!
     date: Int!
-}
+  }
 
   type Mutation {
     register: User
@@ -28,7 +28,13 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     hello: () => 'hesdklfjsllo world',
-    users: () => [{id:34, username:"sotirismorf"}]
+    users: () => [{id:34, username:"sotirismorf"}],
+
+    post: () => ({
+      id:1234,
+      title:"My first post!",
+      body:"This is a post",
+      date:12})
   }
 }
 

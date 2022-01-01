@@ -4,10 +4,15 @@
 
 	const post = {
 		title:"The first post",
-		description:"This is the first post featured in the thmmy website",
-		date:"1-1-2022",
+		description:"This is the first post featured in the thmmy website. This is some more text",
+		date:"Jan 1st 2022",
 		author:"Sotiris Morfakidis",
 		username:"sotirismorf",
+		comments: [
+			{text:"wraio post"},
+			{text:"xalia post"},
+		],
+		commentNum: 2,
 	}
 
 </script>
@@ -15,9 +20,13 @@
 <title>THMMY</title>
 <main class="mt-5">
 	<Card>
-		<h1 
-			class="text-2xl font-bold pb-2 mb-2 border-solid border-b border-gray-400"
-		>Browse threads here</h1>
-		<Post {post} />
+		<section class="divide-y divide-slate-600">
+			<h1 
+				class="text-2xl font-bold pb-2 mb-2"
+			>Browse threads here</h1>
+			<Post {post} />
+			<Post {post} />
+			<Post {post} />
+		</section>
 	</Card>
 </main>
