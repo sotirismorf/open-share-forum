@@ -15,9 +15,9 @@
 <title>THMMY</title>
 <main class="mt-5">
 	<Card>
-		<h1 class="text-2xl font-bold">Browse threads here</h1>
-
+		<h1 
+			class="text-2xl font-bold pb-2 mb-2 border-solid border-b border-gray-400"
+		>Browse threads here</h1>
 		<Post {post} />
-
 	</Card>
 </main>
