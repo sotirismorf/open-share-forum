@@ -1,43 +1,46 @@
-const { ApolloServer, gql } = require('apollo-server');
+var express = require('express')
+var app = express()
 
-const typeDefs = gql`
-  type Query {
-    hello: String
-    users: [User]
-    post: Post
-  }
 
-  type User {
-    id: ID!
-    username: String!
-    password: String!
-  }
-
-  type Post {
-    id: ID!
-    title: String!
-    body: String!
-    date: Int!
-  }
-
-  type Mutation {
-    register: User
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello: () => 'hesdklfjsllo world',
-    users: () => [{id:34, username:"sotirismorf"}],
-
-    post: () => ({
-      id:1234,
-      title:"My first post!",
-      body:"This is a post",
-      date:12})
-  }
+const sotiris = {
+  name:"Sotiris Morfakidis",
+  username:"sotirismorf"
 }
 
-const server = new ApolloServer({typeDefs, resolvers});
+const comment = {
+  author: sotiris,
+  body:"nice!",
+  date:"Jan 2nd 2021"
+}
 
-server.listen().then(({url}) => console.log(`server started at ${url}`))
+const posts = [
+  {
+    id:123456,
+    title:"first post",
+    author:sotiris,
+    date:"Jan 1st 2021",
+    body:"This is my first post",
+    commentNum:4,
+    comments:[]
+  },
+  {
+    id:345456,
+    title:"second post",
+    body:"This is my second post",
+    date:"Jan 1st 2021",
+    author:sotiris,
+    commentNum:4,
+    comments:[comment,comment]
+  }
+]
+
+app.get('/posts', function (req, res) {
+  res.send(posts)
+})
+
+app.get('/post/:id', function (req, res) {
+  const { id } = req.params;
+  res.send(posts[1])
+})
+
+app.listen(4000)
