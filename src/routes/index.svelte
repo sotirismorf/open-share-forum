@@ -1,6 +1,23 @@
-<div class="mt-5">
-	<main class="text-center sm:rounded-lg p-4 pb-7 mx-auto font-bold sm:max-w-lg bg-gray-800">
-		<h1 class="text-4xl mb-7">Welcome to THMMY 2.0</h1>
-		<a href="downloads" class="bg-orange-800 p-3 rounded-xl font-bold text-3xl">Browse Downloads</a>
-	</main>
-</div>
+<script>
+	import Card from "$lib/Card.svelte";
+	import Post from "$lib/Post.svelte";
+
+	const post = {
+		title:"The first post",
+		description:"This is the first post featured in the thmmy website",
+		date:"1-1-2022",
+		author:"Sotiris Morfakidis",
+		username:"sotirismorf",
+	}
+
+</script>
+
+<title>THMMY</title>
+<main class="mt-5">
+	<Card>
+		<h1 class="text-2xl font-bold">Browse threads here</h1>
+
+		<Post {post} />
+
+	</Card>
+</main>
