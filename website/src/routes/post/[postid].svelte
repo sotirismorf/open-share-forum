@@ -10,7 +10,7 @@
 
 <script>
 	import Card from "$lib/Card.svelte";
-	import Post from "$lib/Post.svelte";
+	//import Post from "$lib/Post.svelte";
 	import PostHead from "$lib/PostHead.svelte";
 
 	export let postid;

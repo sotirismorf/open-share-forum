@@ -1,5 +1,6 @@
 <script>
 	import Card from "$lib/Card.svelte";
+	import ButtonPrimary from "$lib/ButtonPrimary.svelte";
 
 	let title=""
 	let body=""
@@ -46,8 +47,5 @@
 		bind:value={body}
 	/>
 	<p>{error}</p>
-	<button
-		class="bg-green-700 rounded-full w-32 py-1"
-		on:click={submitPost}
-	>Submit post</button>
+	<ButtonPrimary title="Post" onClick={submitPost}/>
 </Card>

@@ -2,6 +2,7 @@
 	import Card from "$lib/Card.svelte";
 	import Post from "$lib/Post.svelte";
 	import PostCreation from "$lib/PostCreation.svelte";
+	import ButtonPrimary from "$lib/ButtonPrimary.svelte";
 
 	let showPostCreation = false;
 
@@ -30,11 +31,12 @@
 	{/if}
 	<Card>
 		<section class="divide-y divide-slate-600">
-			<h1 
-				class="text-2xl font-bold pb-2 mb-2"
-			>Browse threads here
-			<button on:click={toggleShowPostCreation}
-			>New post</button></h1>
+			<div class="w-full mb-4 flex justify-between">
+				<h1 
+					class="text-2xl font-bold inline-block"
+				>Browse threads here</h1>
+				<ButtonPrimary title="New Post" onClick={toggleShowPostCreation}/>
+			</div>
 
 			{#await promise}
 				<p>...waiting</p>
