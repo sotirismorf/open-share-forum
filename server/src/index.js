@@ -2,44 +2,10 @@ const express = require('express');
 const cors = require("cors");
 const pool = require("./db");
 
-
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-
-const sotiris = {
-  name:"Sotiris Morfakidis",
-  username:"sotirismorf"
-}
-
-const comment = {
-  author: sotiris,
-  body:"nice!",
-  date:"Jan 2nd 2021"
-}
-
-const posts = [
-  {
-    id:123456,
-    title:"first post",
-    author:sotiris,
-    date:"Jan 1st 2021",
-    body:"This is my first post",
-    commentNum:4,
-    comments:[]
-  },
-  {
-    id:345456,
-    title:"second post",
-    body:"This is my second post",
-    date:"Jan 1st 2021",
-    author:sotiris,
-    commentNum:4,
-    comments:[comment,comment]
-  }
-]
 
 app.get("/users", async (req, res) => {
   try {
@@ -64,6 +30,7 @@ app.post("/users", async (req, res) => {
     res.json(posts.rows[0]);
   } catch (err) {
     console.error(err.message);
+    res.status(400).send();
   }
 });
 
@@ -95,6 +62,7 @@ app.get('/posts', async (req, res) => {
 app.post("/posts", async (req, res) => {
 	try {
 		const { title, author , body } = req.body;
+    console.log(req.body)
 
     const posts = await pool.query("\
       INSERT INTO posts (id,title,date,author,body) \
