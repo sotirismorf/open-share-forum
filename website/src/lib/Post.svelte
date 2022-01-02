@@ -1,6 +1,11 @@
 <script>
 	import PostHead from "./PostHead.svelte";
 	export let post;
+
+	const myDate = new Date(post.date)
+	let date = myDate.toLocaleString('el');
+	console.log(date)
+
 </script>
 
 <div class="py-2">
@@ -12,6 +17,6 @@
 	</a>
 	<section class="flex flex-row justify-between text-slate-400 pr-2">
 		<p>{post.commentNum==1 ? "1 Comment" : post.commentNum+" Comments"}</p>
-		<p>{post.date}</p>
+		<p>{date}</p>
 	</section>
 </div>

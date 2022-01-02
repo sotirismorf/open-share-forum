@@ -1,6 +1,10 @@
 <script>
 	import Card from "$lib/Card.svelte";
 	import ButtonPrimary from "$lib/ButtonPrimary.svelte";
+	import ButtonSecondary from "$lib/ButtonSecondary.svelte";
+
+	export let postSubmited;
+	export let showPostCreation;
 
 	let title=""
 	let body=""
@@ -25,6 +29,7 @@
 			const text = res.json();
 
 			if (res.ok) {
+				postSubmited();
 				console.log(text)
 				return text;
 			} else {
@@ -47,5 +52,8 @@
 		bind:value={body}
 	/>
 	<p>{error}</p>
-	<ButtonPrimary title="Post" onClick={submitPost}/>
+	<div>
+		<ButtonPrimary title="Post" onClick={submitPost}/>
+		<ButtonSecondary title="Cancel" onClick={() => {showPostCreation=false}}/>
+	</div>
 </Card>

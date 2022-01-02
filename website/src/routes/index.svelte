@@ -22,12 +22,17 @@
 	}
 
 	let promise = getPosts();
+
+	function postSubmited() {
+		showPostCreation = false;
+		promise = getPosts();
+	}
 </script>
 
 <title>THMMY</title>
 <main class="mt-5">
 	{#if showPostCreation}
-		<PostCreation />
+		<PostCreation {postSubmited} bind:showPostCreation={showPostCreation} />
 	{/if}
 	<Card>
 		<section class="divide-y divide-slate-600">
