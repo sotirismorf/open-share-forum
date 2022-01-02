@@ -16,7 +16,8 @@
 	export let postid;
 
 	async function getPost() {
-		const res = await fetch(`/api/post/${postid}`);
+		//const res = await fetch(`/api/post/${postid}`);
+		const res = await fetch(`http://localhost:4000/posts/${postid}`);
 		const text = res.json();
 
 		if (res.ok) {
@@ -28,8 +29,15 @@
 
 	let promise = getPost();
 
+		//{#each post.comments as comment}
+		//	<section>
+		//		<PostHead user={comment.author} />
+		//		<p class="text-xl">{comment.body}</p>
+		//	</section>
+		//{/each}
 
 </script>
+
 {#await promise}
 	<title>THMMY</title>
 {:then post}
@@ -44,7 +52,6 @@
 	{#await promise}
 		<p>...waiting</p>
 	{:then post}
-		<title>{post.title}</title>
 		<div>
 			<PostHead user={post.author} />
 			<h1 class="text-2xl">{post.title}</h1>
@@ -54,14 +61,8 @@
 				<p>{post.date}</p>
 			</section>
 		</div>
-		{#each post.comments as comment}
-			<section>
-				<PostHead user={comment.author} />
-				<p class="text-xl">{comment.body}</p>
-			</section>
-		{/each}
 	{:catch error}
-		<p style="color: red">{error.message}</p>
+		<p>{error.message}</p>
 	{/await}
 	</section>
 </Card>

@@ -1,0 +1,31 @@
+CREATE DATABASE thmmy;
+
+CREATE TABLE users (
+    id        SERIAL  PRIMARY KEY,
+    username  TEXT    NOT NULL UNIQUE,
+	name      TEXT    NOT NULL
+);
+
+CREATE TABLE posts (
+    id       SERIAL    PRIMARY KEY,
+	title    TEXT      NOT NULL,
+	date     TIMESTAMP NOT NULL DEFAULT NOW(),
+    author   INT       NOT NULL REFERENCES users,
+    body     TEXT      NOT NULL
+);
+
+CREATE TABLE comment (
+	id       SERIAL     PRIMARY KEY,
+	post     INT        NOT NULL  REFERENCES post,
+	date     TIMESTAMP  NOT NULL DEFAULT NOW(),
+    author   INT        NOT NULL REFERENCES user,
+    body     TEXT      	NOT NULL,
+);
+
+INSERT INTO users(username, name)
+VALUES ('sotirismorf', 'Sotiris Morfakidis')
+RETURNING *;
+
+INSERT INTO posts(title, author, body)
+VALUES ('First post', 1, 'this is the first post of the database')
+RETURNING *;
