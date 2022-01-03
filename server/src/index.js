@@ -53,7 +53,17 @@ app.get('/posts', async (req, res) => {
   try {
     const posts = await pool.query("SELECT * FROM posts");
 
-    res.json(posts.rows);
+    //Get list of all post authors
+    for (let i=0; i<posts.rows.length; i++) {
+      const user = await pool.query(
+        "SELECT * FROM users WHERE id = $1", 
+        [posts.rows[i].author]
+      );
+
+      posts.rows[i].author = user.rows[0]
+    }
+
+    res.json(posts.rows.reverse());
   } catch (err) {
     console.error(err.message);
   }
@@ -62,7 +72,6 @@ app.get('/posts', async (req, res) => {
 app.post("/posts", async (req, res) => {
 	try {
 		const { title, author , body } = req.body;
-    console.log(req.body)
 
     const posts = await pool.query("\
       INSERT INTO posts (id,title,date,author,body) \
