@@ -8,6 +8,12 @@
 		{ name: 'Downloads', href: '/downloads', current: false, prefix: '🌐' },
 		{ name: 'About', href: '/about', current: false, prefix: 'ℹ️' }
 	];
+
+	const dropdownMenuItems = [
+		{ name: 'Your Profile', href: 'profile' },
+		{ name: 'Settings', href: 'settings' },
+		{ name: 'SignOut', href: 'signout' },
+	]
 </script>
 
 <nav class="bg-gray-800 select-none">
@@ -34,7 +40,7 @@
 				</div>
 			</div>
 			{#if $store}
-				<Dropdown></Dropdown>
+				<Dropdown menuItems={dropdownMenuItems}/>
 				<h1 class="hidden sm:block">{$store.username}</h1>
 				<button on:click={logout}>Log Out</button>
 			{:else}
