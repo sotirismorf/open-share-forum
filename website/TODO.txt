@@ -1,4 +1,4 @@
-- Add posts and threads
+X - Add posts and threads
 - Add users
 - Add Authentication
 

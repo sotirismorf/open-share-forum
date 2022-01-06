@@ -1,13 +1,23 @@
 const express = require('express');
 const cors = require("cors");
 const pool = require("./db");
+const controller = require("./controllers/authController");
 
 const app = express();
+
 
 app.use(cors());
 app.use(express.json());
 
-app.get("/users", async (req, res) => {
+app.get("/", async (_req, res) => {
+  try {
+    res.send('Welcome to the THMMY API');
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.get("/users", async (_req, res) => {
   try {
     const users = await pool.query("SELECT * FROM users");
     res.json(users.rows);
@@ -109,4 +119,6 @@ app.get("/posts/:id", async (req, res) => {
   }
 });
 
-app.listen(4000)
+app.post("/auth/signin", controller.signin);
+
+app.listen(4000, () => {console.log('Listening at port 4000!')})

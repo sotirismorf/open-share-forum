@@ -44,7 +44,7 @@
 			</div>
 
 			{#await promise}
-				<p>...waiting</p>
+				<p class="h-80">...waiting</p>
 			{:then posts}
 				{#each posts as post}
 					<Post {post} />

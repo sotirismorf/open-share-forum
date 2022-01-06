@@ -3,6 +3,8 @@
 	import ButtonPrimary from "$lib/ButtonPrimary.svelte";
 	import ButtonSecondary from "$lib/ButtonSecondary.svelte";
 
+	import { store } from '$lib/utils/auth';
+
 	export let postSubmited;
 	export let showPostCreation;
 
@@ -23,7 +25,7 @@
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({title: title, body: body, author: 3}) 
+				body: JSON.stringify({title: title, body: body, author: $store.id}) 
 			});
 
 			const text = res.json();
