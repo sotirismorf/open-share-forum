@@ -1,6 +1,8 @@
 <script>
 	import { store, logout } from '$lib/utils/auth';
 
+	import Dropdown from './Dropdown.svelte'
+
 	const navigation = [
 		{ name: 'Home', href: '/', current: false, prefix: '🏠' },
 		{ name: 'Downloads', href: '/downloads', current: false, prefix: '🌐' },
@@ -32,6 +34,7 @@
 				</div>
 			</div>
 			{#if $store}
+				<Dropdown></Dropdown>
 				<h1 class="hidden sm:block">{$store.username}</h1>
 				<button on:click={logout}>Log Out</button>
 			{:else}

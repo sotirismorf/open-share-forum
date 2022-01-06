@@ -2,7 +2,7 @@
   	//import { ApolloClient, InMemoryCache } from "@apollo/client/core";
   	//import { setClient } from "svelte-apollo";
 
-	import Nav from './Nav.svelte'
+	import Nav from '$lib/Nav.svelte'
 	import '../app.css'
 	import '../tailwind.css'
 
