@@ -1,4 +1,8 @@
 X - Add posts and threads
-- Add users
-- Add Authentication
+X - Add users
+X - Add Authentication
+- Add passwords
+- Add Profile Page
+- Add Settings Page
+- Add About Page
 

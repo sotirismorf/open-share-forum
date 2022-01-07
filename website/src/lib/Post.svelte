@@ -11,7 +11,7 @@
 <div class="py-2">
 	<PostHead user={post.author} />
 
-	<a href="post/{post.id}" class="hover:text-slate-400">
+	<a href="/post/{post.id}" class="hover:text-slate-400">
 		<h1 class="text-2xl">{post.title}</h1>
 		<p>{post.body}</p>
 	</a>
