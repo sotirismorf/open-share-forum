@@ -51,7 +51,7 @@
 </nav>
 
 <div
-	class="w-full absolute bottom-0 sm:hidden bg-gray-800 h-16 inline-flex justify-center p-2 gap-2"
+	class="w-full fixed bottom-0 sm:hidden bg-gray-800 h-16 inline-flex justify-center p-2 gap-2"
 >
 	{#each navigation as item}
 		<a

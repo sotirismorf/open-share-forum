@@ -6,7 +6,7 @@
 		let items, file;
 		//console.log("Folder:"+folder+"endfolder")
 
-		const res = await fetch(folder ? `/api/${folder}` : `/api`);
+		const res = await fetch(folder ? `/api/files/${folder}` : `/api/files`);
 
 
 		//let regex = /\\*\./;
