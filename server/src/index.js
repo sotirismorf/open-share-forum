@@ -143,5 +143,6 @@ app.get("/posts/:id", async (req, res) => {
 
 app.post("/auth/signin", controller.signin);
 app.get("/users/:id/posts", postController.getUserPosts);
+app.get("/posts/:id/comments", postController.getPostComments);
 
 app.listen(4000, () => {console.log('Listening at port 4000!')})

@@ -14,12 +14,12 @@ CREATE TABLE posts (
     body     TEXT      NOT NULL
 );
 
-CREATE TABLE comment (
+CREATE TABLE comments (
 	id       SERIAL     PRIMARY KEY,
-	post     INT        NOT NULL  REFERENCES post,
-	date     TIMESTAMP  NOT NULL DEFAULT NOW(),
-    author   INT        NOT NULL REFERENCES user,
-    body     TEXT      	NOT NULL,
+	post     INT        NOT NULL  REFERENCES posts,
+	date     TIMESTAMP  NOT NULL  DEFAULT NOW(),
+    author   INT        NOT NULL  REFERENCES users,
+    body     TEXT      	NOT NULL
 );
 
 INSERT INTO users(username, name)
@@ -28,4 +28,8 @@ RETURNING *;
 
 INSERT INTO posts(title, author, body)
 VALUES ('First post', 1, 'this is the first post of the database')
+RETURNING *;
+
+INSERT INTO comments (post, author, body)
+VALUES (1, 1, 'this is the first comment of the database')
 RETURNING *;
