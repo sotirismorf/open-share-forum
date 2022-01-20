@@ -1,148 +1,93 @@
-const express = require('express');
-const cors = require("cors");
-const pool = require("./db");
-const controller = require("./controllers/authController");
-const postController = require("./controllers/postController")
+const express = require('express')
+const cors = require('cors')
+const pool = require('./db')
+const controller = require('./controllers/authController')
+const postController = require('./controllers/postController')
 
-const app = express();
+const app = express()
 
+app.use(cors())
+app.use(express.json())
 
-app.use(cors());
-app.use(express.json());
-
-app.get("/", async (_req, res) => {
+app.get('/', async (_req, res) => {
   try {
-    res.send('Welcome to the THMMY API');
+    res.send('Welcome to the THMMY API')
   } catch (err) {
-    console.error(err.message);
+    console.error(err.message)
   }
-});
+})
 
-app.get("/users", async (_req, res) => {
+app.get('/users', async (_req, res) => {
   try {
-    const users = await pool.query("SELECT * FROM users");
-    res.json(users.rows);
+    const users = await pool.query('SELECT * FROM users')
+    res.json(users.rows)
   } catch (err) {
-    console.error(err.message);
+    console.error(err.message)
   }
-});
+})
 
-app.post("/users", async (req, res) => {
-	try {
-		const { username, name } = req.body;
+app.post('/users', async (req, res) => {
+  try {
+    const { username, name } = req.body
 
-    const posts = await pool.query("\
+    const posts = await pool.query(
+      '\
       INSERT INTO users (id,username,name) \
       VALUES (DEFAULT,$1,$2) \
-      RETURNING *",
+      RETURNING *',
       [username, name]
-    );
+    )
 
-    res.json(posts.rows[0]);
+    res.json(posts.rows[0])
   } catch (err) {
-    console.error(err.message);
-    res.status(400).send();
+    console.error(err.message)
+    res.status(400).send()
   }
-});
+})
 
-app.get("/users/:id", async (req, res) => {
+app.get('/users/:id', async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params
 
-    const users = await pool.query(
-      "SELECT * FROM users WHERE id = $1", 
-      [id]
-    );
+    const users = await pool.query('SELECT * FROM users WHERE id = $1', [id])
 
-    res.json(users.rows[0]);
+    res.json(users.rows[0])
   } catch (err) {
-    console.error(err.message);
+    console.error(err.message)
   }
-});
+})
 
-app.get("/users/get/:username", async (req, res) => {
+app.get('/users/get/:username', async (req, res) => {
   try {
-    const { username } = req.params;
+    const { username } = req.params
 
-    const users = await pool.query(
-      "SELECT * FROM users WHERE username = $1", 
-      [username]
-    );
+    const users = await pool.query('SELECT * FROM users WHERE username = $1', [
+      username,
+    ])
 
-    let user = users.rows[0];
+    let user = users.rows[0]
 
     if (!user) {
       res.status(404).send('Invalid username')
     }
 
-    res.json(users.rows[0]);
+    res.json(users.rows[0])
   } catch (err) {
-    console.error(err.message);
+    console.error(err.message)
   }
-});
+})
 
-app.get('/posts', async (req, res) => {
-  try {
-    const posts = await pool.query("SELECT * FROM posts");
+app.get('/posts', postController.getPosts)
+app.get('/posts/:id', postController.getPostbyID)
+app.get('/posts/:id/comments', postController.getPostComments)
 
-    //Get list of all post authors
-    for (let i=0; i<posts.rows.length; i++) {
-      const user = await pool.query(
-        "SELECT * FROM users WHERE id = $1", 
-        [posts.rows[i].author]
-      );
+app.post('/posts', postController.createPost)
 
-      posts.rows[i].author = user.rows[0]
-    }
+app.get('/users/:id/posts', postController.getUserPosts)
 
-    res.json(posts.rows.reverse());
-  } catch (err) {
-    console.error(err.message);
-  }
-});
+app.post('/auth/signin', controller.signin)
+app.post('/auth/signup', controller.signup)
 
-app.post("/posts", async (req, res) => {
-	try {
-		const { title, author , body } = req.body;
-
-    const posts = await pool.query("\
-      INSERT INTO posts (id,title,date,author,body) \
-      VALUES (DEFAULT,$1,DEFAULT,$2,$3) \
-      RETURNING *",
-      [title, author, body]
-    );
-
-    res.json(posts.rows[0]);
-  } catch (err) {
-    console.error(err.message);
-  }
-});
-
-app.get("/posts/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const posts = await pool.query(
-      "SELECT * FROM posts WHERE id = $1", 
-      [id]
-    );
-    
-    const users = await pool.query(
-      "SELECT * FROM users WHERE id = $1", 
-      [posts.rows[0].author]
-    );
-
-    //add user object to the post
-    posts.rows[0].author = users.rows[0]
-
-    res.json(posts.rows[0]);
-  } catch (err) {
-    console.error(err.message);
-  }
-});
-
-app.post("/auth/signin", controller.signin);
-app.get("/users/:id/posts", postController.getUserPosts);
-app.get("/posts/:id/comments", postController.getPostComments);
-
-app.listen(4000, () => {console.log('Listening at port 4000!')})
+app.listen(4000, () => {
+  console.log('Listening at port 4000!')
+})
