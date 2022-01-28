@@ -22,6 +22,11 @@ CREATE TABLE comments (
     body     TEXT      	NOT NULL
 );
 
+CREATE TABLE passwords (
+	id       SERIAL     PRIMARY KEY,
+    password TEXT      	NOT NULL
+);
+
 INSERT INTO users(username, name)
 VALUES ('sotirismorf', 'Sotiris Morfakidis')
 RETURNING *;
