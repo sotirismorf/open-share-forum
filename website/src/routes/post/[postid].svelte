@@ -65,7 +65,7 @@
 			<h1 class="text-2xl">{post.title}</h1>
 			<p>{post.body}</p>
 			<section class="flex flex-row justify-between text-slate-400 pr-2">
-				<p>{commentNum==1 ? "1 Comment" : commentNum+" Comments"}</p>
+				<p>{post.commentNum==1 ? "1 Comment" : post.commentNum+" Comments"}</p>
 				<p>{post.date}</p>
 			</section>
 		</div>
