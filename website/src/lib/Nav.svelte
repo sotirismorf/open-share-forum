@@ -1,7 +1,8 @@
 <script>
-	import { store, logout } from '$lib/utils/auth';
+	import { store } from '$lib/utils/auth';
 
-	import Dropdown from './Dropdown.svelte'
+	import Dropdown from './Dropdown.svelte';
+	import LinkPrimary from './LinkPrimary.svelte';
 
 	const navigation = [
 		{ name: 'Home', href: '/', current: false, prefix: '🏠' },
@@ -10,10 +11,9 @@
 	];
 
 	const dropdownMenuItems = [
-		{ name: 'Your Profile', href: 'profile' },
-		{ name: 'Settings', href: 'settings' },
-		{ name: 'SignOut', href: 'signout' },
-	]
+		{ name: 'Your Profile', href: '/profile' },
+		{ name: 'Settings', href: '/settings/profile' }
+	];
 </script>
 
 <nav class="bg-gray-800 select-none">
@@ -40,19 +40,15 @@
 				</div>
 			</div>
 			{#if $store}
-				<Dropdown menuItems={dropdownMenuItems}/>
-				<h1 class="hidden sm:block">{$store.username}</h1>
-				<button on:click={logout}>Log Out</button>
+				<Dropdown menuItems={dropdownMenuItems} />
 			{:else}
-				<a href="/login">Log In</a>
+				<LinkPrimary href="/login">Sign In</LinkPrimary>
 			{/if}
 		</div>
 	</div>
 </nav>
 
-<div
-	class="w-full fixed bottom-0 sm:hidden bg-gray-800 h-16 inline-flex justify-center p-2 gap-2"
->
+<div class="w-full fixed bottom-0 sm:hidden bg-gray-800 h-16 inline-flex justify-center p-2 gap-2">
 	{#each navigation as item}
 		<a
 			href={item.href}

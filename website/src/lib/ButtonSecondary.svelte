@@ -1,5 +1,4 @@
 <script>
-	export let title;
 	export let onClick;
 </script>
 
@@ -9,5 +8,5 @@
 		bg-slate-700 sm:hover:bg-slate-600 active:bg-slate-600 
 		outline-none"
 >
-	{title}
+	<slot />
 </button>
