@@ -1,7 +1,7 @@
 html {
 	overflow-y: scroll;
-	background: #666666;
 	color: #eee;
+	background: #334155;
 	height: 100%;
 	-webkit-tap-highlight-color: transparent;
 }
@@ -9,3 +9,4 @@ html {
 input {
 	outline: none;
 }
+
