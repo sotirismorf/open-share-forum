@@ -11,6 +11,13 @@
 	let error = '';
 
 	async function onClickLogInButton() {
+		if (username == '') {
+			error = 'Username required'
+			return
+		} else if (password == '') {
+			error = 'Password required'
+			return
+		}
 		console.log(password);
 		const response = await fetch('http://localhost:4000/auth/signin', {
 			method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -48,15 +55,23 @@
 <title>THMMY: Sign In</title>
 <Card>
 	<h1 class="text-3xl font-bold text-center pb-7">Συνδέσου στο ΤΗΜΜΥ</h1>
-	<form class="flex flex-col items-center gap-3" on:submit|preventDefault={onClickLogInButton}>
-		<InputPrimary bind:value={username} description="Username" placeholder="Username" type="text" />
+	<form
+		class="flex flex-col items-center gap-3"
+		on:submit|preventDefault={onClickLogInButton}
+	>
+		<InputPrimary
+			bind:value={username}
+			description="Username"
+			placeholder="Username"
+			type="text"
+		/>
 		<InputPrimary
 			bind:value={password}
 			description="Password"
 			placeholder="Password"
 			type="password"
 		/>
+		<p class="transition-transform text-red-500">{error}</p>
 		<ButtonPrimary title="Sign In" type="submit" />
 	</form>
-	<p>{error}</p>
 </Card>
