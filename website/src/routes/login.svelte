@@ -72,6 +72,6 @@
 			type="password"
 		/>
 		<p class="transition-transform text-red-500">{error}</p>
-		<ButtonPrimary title="Sign In" type="submit" />
+		<ButtonPrimary type="submit">Sign In</ButtonPrimary>
 	</form>
 </Card>

@@ -40,7 +40,7 @@
 				<h1 
 					class="text-2xl font-bold inline-block"
 				>Browse threads here</h1>
-				<ButtonPrimary title="New Post" onClick={toggleShowPostCreation}/>
+				<ButtonPrimary onClick={toggleShowPostCreation}>New Post</ButtonPrimary>
 			</div>
 
 			{#await promise}
