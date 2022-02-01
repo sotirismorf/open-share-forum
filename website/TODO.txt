@@ -1,8 +1,11 @@
 X - Add posts and threads
 X - Add users
 X - Add Authentication
-- Add passwords
+X - Add passwords
 - Add Profile Page
 - Add Settings Page
 - Add About Page
 
+DOWNLOADS:
+- add option to either download file or open in new tab (preview)
+- add option to download a whole directory zipped
