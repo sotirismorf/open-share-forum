@@ -4,20 +4,10 @@
 		const semester = page.params.semester;
 		const folder = page.params.folder;
 
-		let items, file;
-		//console.log("Folder:"+folder+"endfolder")
+		let file;
 
-		//const res = await fetch(folder ? `/api/files/${folder}` : `/api/files`);
-		const res = await fetch('http://localhost:4000/downloads/page/1');
+		const res = await fetch(`http://localhost:4000/downloads/${folder}`);
 
-		//let regex = /\\*\./;
-		//const isFile = regex.test(folder)
-		//if (isFile){
-		//	file = await res.text();
-		//} else {
-		//	//console.log(res)
-		//	items = await res.json();
-		//}
 		const isFile = false;
 
 		if (res.ok) {
@@ -91,14 +81,16 @@
 					target="_blank"
 					href="http://localhost:4000/downloads/preview/{item.id}.{item.filetype}"
 				>
-					📃 {item.id} {item.name}
+					📃 {item.id}
+					{item.name}
 				</a>
 				<a
 					class="text-xl hover:text-gray-300"
 					target="_blank"
 					href="http://localhost:4000/downloads/get/{item.id}.{item.filetype}"
 				>
-					📃 {item.id} {item.name} (Download)
+					📃 {item.id}
+					{item.name} (Download)
 				</a>
 			{:else}
 				<a
