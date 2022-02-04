@@ -65,7 +65,8 @@ app.post('/posts', postController.createPost)
 
 app.get('/users/:id/posts', postController.getUserPosts)
 
-app.get('/downloads/page/:page', downloadsController.getDownloads)
+app.get('/courses/:cycle/:semester/', downloadsController.getCourses)
+app.get('/downloads/:course/', downloadsController.getDownloads)
 app.post('/downloads', downloadsController.newUpload)
 
 app.get('/courses', courseController.getCourses)
