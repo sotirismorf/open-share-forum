@@ -58,23 +58,37 @@ exports.getCourses = async (req, res) => {
 }
 
 exports.newUpload = async (req, res) => {
+  const {
+    author,
+    filename,
+    filetype,
+    description,
+    detail,
+    course,
+    year,
+    isExam,
+    examSemester,
+    hasSolutions,
+  } = req.body
+
+
   try {
     const data = await pool.query(
       'INSERT INTO files \
-      (author,name,filetype,description,detail,course,year,is_exam,exam_semester,has_solutions) \
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) \
+      (id,author,name,filetype,description,detail,course,year,is_exam,exam_semester,has_solutions) \
+      VALUES (default,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10) \
       RETURNING *',
       [
-        1,
-        'first post',
-        'pdf',
-        'simple descr',
-        'omadaA',
-        1,
-        2022,
-        false,
-        0,
-        false,
+        author,
+        filename,
+        filetype,
+        description,
+        detail,
+        course,
+        year,
+        isExam,
+        examSemester,
+        hasSolutions,
       ]
     )
 

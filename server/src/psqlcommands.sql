@@ -74,6 +74,6 @@ INSERT INTO files
 VALUES (1,'first post','pdf','simple descr','omadaA',3,2022,false,0,false)
 RETURNING *;
 
-INSERT INTO courses (name, semester, study_cycle, description)
-VALUES ('Εφαρμοσμένα Μαθηματικά', 1, 3, 'maths')
+INSERT INTO courses (name, coude_name semester, study_cycle, description)
+VALUES ('','' , 3, 1, '')
 RETURNING *;
