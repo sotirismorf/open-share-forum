@@ -18,9 +18,9 @@
 			error = 'Password required'
 			return
 		}
-		console.log(password);
+		//console.log(password);
 		const response = await fetch('http://localhost:4000/auth/signin', {
-			method: 'POST', // *GET, POST, PUT, DELETE, etc.
+			method: 'POST',
 			//mode: 'cors', // no-cors, *cors, same-origin
 			//cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
 			//credentials: 'same-origin', // include, *same-origin, omit
