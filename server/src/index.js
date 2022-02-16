@@ -1,6 +1,10 @@
 const express = require('express')
 const cors = require('cors')
+const bodyParser = require('body-parser')
+const fileUpload = require('express-fileupload');
+
 const pool = require('./db')
+
 const controller = require('./controllers/authController')
 const postController = require('./controllers/postController')
 const downloadsController = require('./controllers/downloadsController')
@@ -9,14 +13,31 @@ const courseController = require('./controllers/courseController')
 const app = express()
 
 app.use(cors())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(fileUpload({
+		createParentPath: true
+}));
 
-app.use('/downloads/preview', express.static('/home/sotiris/testing'))
+app.use('/downloads/preview', express.static('/home/sotiris/thmmyrepository'))
 
-app.get('/downloads/get/:file', (req, res) => {
-  const file = `/home/sotiris/testing/10.pdf`;
-  res.download(file); // Set disposition and send it.
-});
+app.get('/downloads/get/:file', async (req, res) => {
+  const file = `/home/sotiris/thmmyrepository/${req.params.file}`
+
+  const fileData = await pool.query(
+    'SELECT name,filetype FROM files WHERE id=$1',
+    [req.params.file]
+  )
+  try {
+    const { name, filetype } = fileData.rows[0]
+    res.download(`${file}.${filetype}`, `${name}.${filetype}`)
+
+  } catch (err) {
+    re.sendStatus('404 not found')
+    console.log(err.message)
+  }
+})
 
 app.get('/', async (_req, res) => {
   try {
