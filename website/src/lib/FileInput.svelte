@@ -5,56 +5,95 @@
 	import ButtonPrimary from './ButtonPrimary.svelte';
 	import ButtonSecondary from './ButtonSecondary.svelte';
 
-	import { store } from './utils/auth'
-	console.log($store);
+	import { store } from './utils/auth';
 
-	export let path;
-	let fileinput, image, showPopup = false;
-	let fileName, isExam = false;
-	let errorPostCreation = ""
+	if ($store)
+		console.log({
+			author: $store.id,
+			course: 3
+		});
+
+	let fileinput,
+		image,
+		showPopup = false;
+
+	let fileDescription = '',
+		fileBaseName = '',
+		fileExtension = '',
+		fileDetail = '',
+		fileYear = 0,
+		fileIsExam = false,
+		fileExamSemester = 0,
+		fileHasSolutions = false;
+
+	let selectText = 'Φεβρουαρίου';
+
+	let errorPostCreation = '';
 	//let avatar
 
 	const onFileSelected = (e) => {
 		image = e.target.files[0];
-		fileName = image.name;
+		let fileArray = image.name.split('.');
+
+		fileBaseName = fileArray[0];
+		fileExtension = fileArray[1];
+
 		//let reader = new FileReader();
 		//reader.readAsDataURL(image);
-
-		//reader.onload = e => {
-		//	avatar = e.target.result
-		//};
 	};
 
 	function onClickNewUpload() {
 		if ($store) showPopup = true;
-		else errorPostCreation = "You have to be signed in to upload a file"
+		else errorPostCreation = 'You have to be signed in to upload a file';
+	}
+
+	function onClickUpload() {
+		if (!image) {
+			console.log('You have not seleted an image');
+		} else if (!fileBaseName || !fileExtension) {
+			console.log('Invalid File name');
+		} else {
+			if (fileIsExam) {
+				if (selectText == 'Φεβρουαρίου') fileExamSemester = 1;
+				else if (selectText == 'Ιουνίου') fileExamSemester = 2;
+				else if (selectText == 'Σεπτεμβρίου') fileExamSemester = 3;
+			}
+			upload();
+		}
 	}
 
 	function upload() {
-		//const formData = new FormData();
-		//formData.append('dataFile', image);
-		//formData.append('path', path + '/');
-		const upload = fetch('http://localhost:4000/downloads', {
-			method: 'POST',
-			headers: {
-				'ContentType': 'application/json'
-				// 'Content-Type': 'application/x-www-form-urlencoded',
-			},
-			body: JSON.stringify({
-				author: 1,
-				filename: "new_file",
-				filetype: "pdf",
-				description: "testing the new api",
-				detail: "new_file",
+		const formData = new FormData();
+
+		formData.append('file', image);
+		formData.append(
+			'document',
+			JSON.stringify({
+				author: $store.id,
+				filename: fileBaseName,
+				filetype: fileExtension,
+				description: fileDescription,
+				detail: fileDetail,
 				course: 3,
-				year: 2021,
-				isExam: false,
-				examSemester: 1,
-				hasSolutions: 1,
+				year: fileYear,
+				isExam: fileIsExam,
+				examSemester: fileExamSemester,
+				hasSolutions: fileHasSolutions
 			})
+		);
+
+		//formData.append('thing', 'string');
+		//for (var [key, value] of formData.entries()) {
+		//	console.log(key, value);
+		//}
+
+		const response = fetch('http://localhost:4000/downloads', {
+			method: 'POST',
+			body: formData
 		})
 			.then((response) => response.json())
 			.then((result) => {
+				showPopup = false;
 				console.log('Success:', result);
 			})
 			.catch((error) => {
@@ -63,56 +102,83 @@
 	}
 </script>
 
-<ButtonPrimary
-	onClick={onClickNewUpload}>Upload a File</ButtonPrimary
->
+<ButtonPrimary onClick={onClickNewUpload}>Upload a File</ButtonPrimary>
 <p class="text-red-500">{errorPostCreation}</p>
 {#if showPopup}
-	<div class="center bg-slate-800 px-4 py-4 rounded-lg">
-		<form class="flex flex-col gap-2">
-			<ButtonNoDefault
-				onClick={() => {
-					fileinput.click();
-				}}>Select a File From your Computer</ButtonNoDefault
-			>
-			{#if image}
-				<p class="ml-3 inline-block p-2">File Selected</p>
-				<div
-					class="border-gray-400 border-dashed border-2 p-3 my-3 rounded-lg block overflow-ellipsis overflow-hidden whitespace-nowrap"
+	<div class="absolute left-0 top-0 w-full h-full bg-black/30">
+		<div class="center bg-slate-800 px-4 py-4 rounded-lg">
+			<form class="flex flex-col gap-2">
+				<ButtonNoDefault
+					onClick={() => {
+						fileinput.click();
+					}}>Select a File From your Computer</ButtonNoDefault
 				>
-					📃 {fileName}
+				{#if image}
+					<p class="ml-3 inline-block p-2">File Selected</p>
+					<div
+						class="border-gray-400 border-dashed border-2 p-3 my-3 rounded-lg block overflow-ellipsis overflow-hidden whitespace-nowrap"
+					>
+						📃 {fileBaseName}.{fileExtension}
+					</div>
+				{/if}
+
+				<div>
+					<input
+						class="appearance-none outline-none h-4 w-4 border border-none rounded-full bg-white checked:bg-green-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+						type="checkbox"
+						value="isExamCheckbox"
+						bind:checked={fileIsExam}
+					/>
+
+					<label for="isExamCheckbox">Αυτό το αρχείο είναι θέμα εξετάσεων</label>
 				</div>
-			{/if}
-
-			<div>
-				<input
-					class="appearance-none outline-none h-4 w-4 border border-none rounded-full bg-white checked:bg-green-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-					type="checkbox"
-					value="isExam"
-					bind:checked={isExam}
+				<InputPrimary placeholder="Name" description="Όνομα Αρχείου" bind:value={fileBaseName} />
+				{#if fileIsExam}
+					<div>
+						<select
+							class="appearance-none outline-none bg-slate-600 placeholder-slate-400 rounded-full py-2 px-4 max-w-sm w-max transition-colors focus:bg-slate-500"
+							bind:value={selectText}
+						>
+							<option>Φεβρουαρίου</option>
+							<option>Ιουνίου</option>
+							<option>Σεπτεμβρίου</option>
+						</select>
+					</div>
+					<InputPrimary
+						placeholder="π.χ. omadaA, atreas, lyseis"
+						description="Λεπτομέρεια "
+						bind:value={fileDetail}
+					/>
+				{/if}
+				<InputPrimary
+					placeholder="π.χ. Σημειώσεις Εφαρμοσμένα 19-20"
+					description="Περιγραφη αρχείου (προαιρετικό)"
+					bind:value={fileDescription}
 				/>
+				<InputPrimary
+					placeholder="π.χ. 2021"
+					type="number"
+					description="Χρονιά"
+					bind:value={fileYear}
+				/>
+				<div>
+					<ButtonNoDefault onClick={onClickUpload}>Enter</ButtonNoDefault>
+					<ButtonSecondary
+						onClick={() => {
+							showPopup = false;
+						}}>Cancel</ButtonSecondary
+					>
+				</div>
 
-				<label for="isExam">Αυτό το αρχείο είναι θέμα εξετάσεων</label>
-			</div>
-			<InputPrimary placeholder="Name" description="Όνομα Αρχείου" bind:value={fileName} />
-			{#if isExam}
-				<InputPrimary placeholder="π.χ. omadaA, atreas, lyseis" description="Λεπτομέρεια " />
-			{/if}
-			<InputPrimary placeholder="π.χ. Σημειώσεις Εφαρμοσμένα 19-20" description="Περιγραφη αρχείου (προαιρετικό)" />
-			<InputPrimary placeholder="Year" type="number" description="Χρονιά"/>
-			<div>
-				<ButtonNoDefault onClick={upload}>Enter</ButtonNoDefault>
-				<ButtonSecondary onClick={() => {showPopup = false;}}>Cancel</ButtonSecondary>
-			</div>
-
-			<input
-				style="display:none"
-				type="file"
-				accept=".pdf, .txt, .jpg, .jpeg, .png"
-				on:change={(e) => onFileSelected(e)}
-				bind:this={fileinput}
-			/>
-		</form>
+				<input
+					style="display:none"
+					type="file"
+					accept=".pdf, .txt, .jpg, .jpeg, .png"
+					on:change={(e) => onFileSelected(e)}
+					bind:this={fileinput}
+				/>
+			</form>
+		</div>
 	</div>
 {/if}
 
