@@ -98,7 +98,6 @@ exports.newUpload = async (req, res) => {
 
       let file = req.files.file;
 
-      console.log(fileData.rows[0].id)
       file.mv(`/home/sotiris/thmmyrepository/${fileData.rows[0].id}.${filetype}`)
       res.send({ message: 'File Uploaded' })
     }
