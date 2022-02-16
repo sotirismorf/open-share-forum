@@ -11,8 +11,4 @@
 <style>
 	@tailwind base;
 	@tailwind components;
-
-	html {
-		height: 100%;
-	}
 </style>
