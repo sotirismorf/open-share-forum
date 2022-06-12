@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { AppDataSource } from '../AppDataSource'
+import { Course } from '../entities/Course'
 import { File } from '../entities/File'
 
 export async function getFile(request: Response, response: Response) {
@@ -11,6 +12,9 @@ export async function getFiles(request: Request, response: Response) {
   console.log(request.query)
   AppDataSource.getRepository(File)
     .find({
+      relations: {
+        course: true
+      },
       where: request.query,
     })
     .then((data) => {
