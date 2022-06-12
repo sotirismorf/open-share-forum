@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	//This component is based on https://svelte.dev/repl/b17c13d4f1bb40799ccf09e0841ddd90
 	import InputPrimary from './InputPrimary.svelte';
 	import ButtonNoDefault from './buttons/ButtonNoDefault.svelte';
@@ -6,6 +6,7 @@
 	import ButtonSecondary from './ButtonSecondary.svelte';
 
 	import { store } from './utils/auth';
+	import { course } from './utils/auth';
 
 	if ($store)
 		console.log({
@@ -22,9 +23,28 @@
 		fileExtension = '',
 		fileDetail = '',
 		fileYear = 0,
-		fileIsExam = false,
-		fileExamSemester = 0,
-		fileHasSolutions = false;
+		fileIsExam = false;
+
+	const metadata = {
+		filename: 'lfskdjf.pdf',
+		course: $course,
+		user: 1,
+		semester: 2,
+		exams: true,
+		exam_year: 2022,
+		exam_period: 2,
+		has_solutions: false
+	};
+	//const metadata = {
+	//	filename: null,
+	//	course: 2,
+	//	user: 1,
+	//	semester: null,
+	//	exams: null,
+	//	exam_year: null,
+	//	exam_period: null,
+	//	has_solutions: null
+	//};
 
 	let selectText = 'Φεβρουαρίου';
 
@@ -43,7 +63,9 @@
 	};
 
 	function onClickNewUpload() {
-		if ($store) showPopup = true;
+		// ALLAKSE AUTO
+		//if ($store) showPopup = true;
+		if (true) showPopup = true;
 		else errorPostCreation = 'You have to be signed in to upload a file';
 	}
 
@@ -54,9 +76,9 @@
 			console.log('Invalid File name');
 		} else {
 			if (fileIsExam) {
-				if (selectText == 'Φεβρουαρίου') fileExamSemester = 1;
-				else if (selectText == 'Ιουνίου') fileExamSemester = 2;
-				else if (selectText == 'Σεπτεμβρίου') fileExamSemester = 3;
+				if (selectText == 'Φεβρουαρίου') metadata.exam_semester = 1;
+				else if (selectText == 'Ιουνίου') metadata.exam_semester = 2;
+				else if (selectText == 'Σεπτεμβρίου') metadata.exam_semester= 3;
 			}
 			upload();
 		}
@@ -66,28 +88,14 @@
 		const formData = new FormData();
 
 		formData.append('file', image);
-		formData.append(
-			'document',
-			JSON.stringify({
-				author: $store.id,
-				filename: fileBaseName,
-				filetype: fileExtension,
-				description: fileDescription,
-				detail: fileDetail,
-				course: 3,
-				year: fileYear,
-				isExam: fileIsExam,
-				examSemester: fileExamSemester,
-				hasSolutions: fileHasSolutions
-			})
-		);
+		formData.append('document', JSON.stringify([metadata]));
 
 		//formData.append('thing', 'string');
 		//for (var [key, value] of formData.entries()) {
 		//	console.log(key, value);
 		//}
 
-		const response = fetch('http://localhost:4000/downloads', {
+		const response = fetch('http://localhost:4000/file', {
 			method: 'POST',
 			body: formData
 		})
@@ -107,6 +115,7 @@
 {#if showPopup}
 	<div class="absolute left-0 top-0 w-full h-full bg-black/30">
 		<div class="center bg-slate-800 px-4 py-4 rounded-lg">
+			<h1>{JSON.stringify(metadata)}</h1>
 			<form class="flex flex-col gap-2">
 				<ButtonNoDefault
 					onClick={() => {
@@ -127,12 +136,12 @@
 						class="appearance-none outline-none h-4 w-4 border border-none rounded-full bg-white checked:bg-green-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
 						type="checkbox"
 						value="isExamCheckbox"
-						bind:checked={fileIsExam}
+						bind:checked={metadata.exams}
 					/>
 
 					<label for="isExamCheckbox">Αυτό το αρχείο είναι θέμα εξετάσεων</label>
 				</div>
-				<InputPrimary placeholder="Name" description="Όνομα Αρχείου" bind:value={fileBaseName} />
+				<InputPrimary placeholder="Name" description="Όνομα Αρχείου" bind:value={metadata.filename} />
 				{#if fileIsExam}
 					<div>
 						<select
@@ -159,7 +168,7 @@
 					placeholder="π.χ. 2021"
 					type="number"
 					description="Χρονιά"
-					bind:value={fileYear}
+					bind:value={metadata.exam_year}
 				/>
 				<div>
 					<ButtonNoDefault onClick={onClickUpload}>Enter</ButtonNoDefault>

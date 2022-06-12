@@ -6,7 +6,7 @@
 
 		let file;
 
-		const res = await fetch(`http://localhost:4000/downloads/${folder}`);
+		const res = await fetch(`http://localhost:4000/file?course.id=${folder}`);
 
 		const isFile = false;
 
@@ -32,30 +32,38 @@
 	import FileInput from '$lib/FileInput.svelte';
 	import LinkPrimary from '$lib/LinkPrimary.svelte';
 	import Breadcrumb from '$lib/Breadcrumb.svelte';
+	import { course } from '../../../../lib/utils/auth'
 
 	//TODO: na apofasisw an thelw na kanw fetch ta items ston server kai na
 	//      epistrefw mazi thn istoselida h na ta kanw fetch apo to
 	//      client kai na kanw await blocks
 
 	export let items;
+	export let folder
 
-	const breadcrumb = [{
-        "title": "Βασικός κύκλος σπουδών",
-        "codename": "vasikos",
-        "href": "vasikos"
-    }, {
-        "title": "3ο εξάμηνο",
-        "codename": "3",
-        "href": "vasikos/3"
-    }, {
-        "title": "Εφαρμοσμένα Μαθηματικά",
-        "codename": "efarmosmena",
-        "href": "vasikos/3/efarmosmena"
-    }]
+	$course = folder
+
+	const breadcrumb = [
+		{
+			title: 'Βασικός κύκλος σπουδών',
+			codename: 'vasikos',
+			href: 'vasikos'
+		},
+		{
+			title: '3ο εξάμηνο',
+			codename: '3',
+			href: 'vasikos/3'
+		},
+		{
+			title: 'Εφαρμοσμένα Μαθηματικά',
+			codename: 'efarmosmena',
+			href: 'vasikos/3/efarmosmena'
+		}
+	];
 </script>
 
 <Card>
-	<Breadcrumb items={breadcrumb}/>
+	<Breadcrumb items={breadcrumb} />
 	{#if items.length == 0}
 		<div class="my-24 text-center">
 			<h1 class="text-3xl font-bold">This directory is empty... 😅</h1>
@@ -69,11 +77,9 @@
 				target="_blank"
 				href="http://localhost:4000/downloads/preview/{item.id}.{item.filetype}"
 			>
-				📃 {item.name}<span class="italic text-green-400">.{item.filetype}</span>
+				📃 {item.filename}<span class="italic text-green-400">.{item.filetype}</span>
 			</a>
-			<LinkPrimary 
-				href="http://localhost:4000/downloads/get/{item.id}"
-			>Download</LinkPrimary>
+			<LinkPrimary href="http://localhost:4000/downloads/get/{item.id}">Download</LinkPrimary>
 		</div>
 	{/each}
 	<FileInput />
