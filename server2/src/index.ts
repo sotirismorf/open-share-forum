@@ -1,8 +1,12 @@
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
+import * as cors from 'cors'
+import * as fileUpload from 'express-fileupload'
 
 import { AppDataSource } from './AppDataSource'
 import { appRoutes } from './routes/courseRoutes'
+import { fileRoutes } from './routes/fileRoutes'
+import { userRoutes } from './routes/userRoutes'
 
 AppDataSource.initialize()
   .then(() => {
@@ -12,11 +16,21 @@ AppDataSource.initialize()
 
       const app = express()
       app.use(bodyParser.json())
+      app.use(cors())
+      app.use(fileUpload({
+        limits: { fileSize: 50 * 1024 * 1024 },
+      }));
 
       for (const route of appRoutes) {
         app[route.method](route.path, route.action)
       }
-      app.listen(3000)
+      for (const route of fileRoutes) {
+        app[route.method](route.path, route.action)
+      }
+      for (const route of userRoutes) {
+        app[route.method](route.path, route.action)
+      }
+      app.listen(4000)
     })
   })
 

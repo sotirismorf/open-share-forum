@@ -1,20 +1,19 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 
 @Entity()
 export class Course {
+  @PrimaryGeneratedColumn()
+  id: number
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  name: string
 
-    @Column()
-    name: string;
+  @Column()
+  codename: string
 
-    @Column()
-    codename: string;
+  @Column()
+  semester: number
 
-    @Column()
-    semester: number;
-
-    @Column()
-    repository: number;
+  @Column()
+  repository: number
 }
