@@ -21,6 +21,12 @@ export class File {
   @Column()
   filename: string
 
+  @Column({ default: "unknown"})
+  filebasename: string
+
+  @Column({ default: "ext"})
+  extension: string
+
   @ManyToOne(() => Course)
   @JoinColumn({ name: 'course_id' })
   course: Course

@@ -3,7 +3,7 @@ import {
   getCourse,
   getCourseBySemester,
   newCourse,
-} from '../controllers/courseControllers'
+} from '../controllers/course.controller'
 
 export const appRoutes = [
   {
