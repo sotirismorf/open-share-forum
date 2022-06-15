@@ -1,45 +1,46 @@
-<script context="module">
-	export async function load({ page, fetch }) {
-		const repository = page.params.repository;
-		const semester = page.params.semester;
-		const folder = page.params.folder;
+<script lang="ts" context="module">
+	export async function load({ params, fetch }) {
+		const repository = params.repository;
+		const semester = params.semester;
+		const folder = params.folder;
 
-		let file;
+		const metadataPromise = await fetch(`http://localhost:4000/file?course.id=${folder}`);
+		const coursePromise = await fetch(`http://localhost:4000/courses/${folder}`);
 
-		const res = await fetch(`http://localhost:4000/file?course.id=${folder}`);
-
-		const isFile = false;
-
-		if (res.ok) {
+		if (metadataPromise.ok && coursePromise.ok) {
 			return {
 				props: {
-					items: await res.json(),
+					items: await metadataPromise.json(),
+					currentCourse: await coursePromise.json(),
 					folder,
-					file,
-					isFile
+					semester,
 				}
 			};
 		}
 		return {
-			status: res.status,
+			status: metadataPromise.status,
 			error: new Error(`Could not load folder`)
 		};
 	}
 </script>
 
-<script>
+<script lang="ts">
 	import Card from '$lib/Card.svelte';
 	import FileInput from '$lib/FileInput.svelte';
 	import LinkPrimary from '$lib/LinkPrimary.svelte';
 	import Breadcrumb from '$lib/Breadcrumb.svelte';
 	import { course } from '../../../../lib/utils/auth'
+	import type { Course } from '../../../../../../server2/src/entities/Course'
+	//import type { Course } from '$entities/Course'
 
 	//TODO: na apofasisw an thelw na kanw fetch ta items ston server kai na
 	//      epistrefw mazi thn istoselida h na ta kanw fetch apo to
 	//      client kai na kanw await blocks
 
-	export let items;
-	export let folder
+	export let items: any;
+	export let folder: string;
+	export let currentCourse: Course[];
+	export let semester: number;
 
 	$course = folder
 
@@ -50,14 +51,14 @@
 			href: 'vasikos'
 		},
 		{
-			title: '3ο εξάμηνο',
-			codename: '3',
-			href: 'vasikos/3'
+			title: `${semester}ο εξάμηνο`,
+			codename: semester,
+			href: `vasikos/${semester}`
 		},
 		{
-			title: 'Εφαρμοσμένα Μαθηματικά',
-			codename: 'efarmosmena',
-			href: 'vasikos/3/efarmosmena'
+			title: currentCourse[0].name,
+			codename: currentCourse[0].codename,
+			href: `vasikos/${semester}/${currentCourse[0].id}`
 		}
 	];
 </script>
@@ -75,11 +76,11 @@
 			<a
 				class="text-xl hover:text-gray-300"
 				target="_blank"
-				href="http://localhost:4000/downloads/preview/{item.id}.{item.filetype}"
+				href="http://localhost:4000/downloads/preview/{item.id}.{item.extension}"
 			>
-				📃 {item.filename}<span class="italic text-green-400">.{item.filetype}</span>
+				📃 {item.filebasename}<span class="italic text-green-400">.{item.extension}</span>
 			</a>
-			<LinkPrimary href="http://localhost:4000/downloads/get/{item.id}">Download</LinkPrimary>
+			<LinkPrimary href="http://localhost:4000/download?id={item.id}">Download</LinkPrimary>
 		</div>
 	{/each}
 	<FileInput />

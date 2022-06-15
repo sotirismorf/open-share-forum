@@ -1,29 +1,7 @@
 <script context="module">
-	//export async function load({ page, fetch }) {
-	//	const res = await fetch(`http://localhost:4000/courses/1/${page.params.semester}`);
-	//	// TODO:
-	//	// NA TO KANW NA PSAXNEI PX :4000/:repo/:semester
-	//	// KAI META NA VALW KAI ROUTE GIA :4000/:course/:page
-
-	//	if (res.ok) {
-	//		const { breadcrumb, courses } = await res.json();
-	//		return {
-	//			props: {
-	//				items: courses,
-	//				breadcrumbItems: breadcrumb,
-	//				repository: page.params.repository,
-	//				semester: page.params.semester
-	//			}
-	//		};
-	//	} else
-	//		return {
-	//			status: res.status,
-	//			error: new Error(`Could not load folder`)
-	//		};
-	//}
-	export async function load({ page, fetch }) {
+	export async function load({ params, fetch }) {
 		const res = await fetch(
-			`http://localhost:4000/courses/semester/${page.params.semester}`
+			`http://localhost:4000/courses/semester/${params.semester}`
 		);
 
 		if (res.ok) {
@@ -31,8 +9,8 @@
 			return {
 				props: {
 					courses,
-					repository: page.params.repository,
-					semester: page.params.semester
+					repository: params.repository,
+					semester: params.semester
 				}
 			};
 		} else

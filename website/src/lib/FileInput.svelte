@@ -16,7 +16,8 @@
 
 	let fileinput,
 		image,
-		showPopup = false;
+		showPopup = false,
+		files;
 
 	let fileDescription = '',
 		fileBaseName = '',
@@ -35,16 +36,6 @@
 		exam_period: 2,
 		has_solutions: false
 	};
-	//const metadata = {
-	//	filename: null,
-	//	course: 2,
-	//	user: 1,
-	//	semester: null,
-	//	exams: null,
-	//	exam_year: null,
-	//	exam_period: null,
-	//	has_solutions: null
-	//};
 
 	let selectText = 'Φεβρουαρίου';
 
@@ -52,8 +43,10 @@
 	//let avatar
 
 	const onFileSelected = (e) => {
+		files = e.target.files;
 		image = e.target.files[0];
 		let fileArray = image.name.split('.');
+		metadata.filename = image.name
 
 		fileBaseName = fileArray[0];
 		fileExtension = fileArray[1];
@@ -76,9 +69,9 @@
 			console.log('Invalid File name');
 		} else {
 			if (fileIsExam) {
-				if (selectText == 'Φεβρουαρίου') metadata.exam_semester = 1;
-				else if (selectText == 'Ιουνίου') metadata.exam_semester = 2;
-				else if (selectText == 'Σεπτεμβρίου') metadata.exam_semester= 3;
+				if (selectText == 'Φεβρουαρίου') metadata.exam_period = 1;
+				else if (selectText == 'Ιουνίου') metadata.exam_period = 2;
+				else if (selectText == 'Σεπτεμβρίου') metadata.exam_period= 3;
 			}
 			upload();
 		}
