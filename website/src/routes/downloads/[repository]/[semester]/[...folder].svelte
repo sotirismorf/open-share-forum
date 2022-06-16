@@ -25,17 +25,22 @@
 </script>
 
 <script lang="ts">
+	import Dropzone from "svelte-file-dropzone";
+
 	import Card from '$lib/Card.svelte';
-	import FileInput from '$lib/FileInput.svelte';
+	import FileUpload from "../../../../lib/forms/FileUpload.svelte";
 	import LinkPrimary from '$lib/LinkPrimary.svelte';
 	import Breadcrumb from '$lib/Breadcrumb.svelte';
+
 	import { course } from '../../../../lib/utils/auth'
 	import type { Course } from '../../../../../../server2/src/entities/Course'
 	//import type { Course } from '$entities/Course'
 
-	//TODO: na apofasisw an thelw na kanw fetch ta items ston server kai na
-	//      epistrefw mazi thn istoselida h na ta kanw fetch apo to
-	//      client kai na kanw await blocks
+	let files = {
+		accepted: [],
+		rejected: []
+	};
+
 
 	export let items: any;
 	export let folder: string;
@@ -61,8 +66,16 @@
 			href: `vasikos/${semester}/${currentCourse[0].id}`
 		}
 	];
+
+	function handleFilesSelect(e) {
+		const { acceptedFiles, fileRejections } = e.detail;
+		console.log(e.detail.acceptedFiles)
+		files.accepted = [...files.accepted, ...acceptedFiles];
+		files.rejected = [...files.rejected, ...fileRejections];
+	}
 </script>
 
+<FileUpload />
 <Card>
 	<Breadcrumb items={breadcrumb} />
 	{#if items.length == 0}
@@ -78,10 +91,13 @@
 				target="_blank"
 				href="http://localhost:4000/downloads/preview/{item.id}.{item.extension}"
 			>
-				📃 {item.filebasename}<span class="italic text-green-400">.{item.extension}</span>
+				📃 {item.filebasename}
+				<span class="italic text-green-400">.{item.extension}</span>
 			</a>
-			<LinkPrimary href="http://localhost:4000/download?id={item.id}">Download</LinkPrimary>
+			<LinkPrimary href="http://localhost:4000/download?id={item.id}">
+				Download
+			</LinkPrimary>
 		</div>
 	{/each}
-	<FileInput />
 </Card>
+
