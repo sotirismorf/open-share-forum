@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Dropzone from "svelte-file-dropzone";
 	//This component is based on https://svelte.dev/repl/b17c13d4f1bb40799ccf09e0841ddd90
 	import InputPrimary from './InputPrimary.svelte';
 	import ButtonNoDefault from './buttons/ButtonNoDefault.svelte';
@@ -16,8 +17,7 @@
 
 	let fileinput,
 		image,
-		showPopup = false,
-		files;
+		showPopup = false;
 
 	let fileDescription = '',
 		fileBaseName = '',
@@ -43,7 +43,6 @@
 	//let avatar
 
 	const onFileSelected = (e) => {
-		files = e.target.files;
 		image = e.target.files[0];
 		let fileArray = image.name.split('.');
 		metadata.filename = image.name
@@ -88,7 +87,7 @@
 		//	console.log(key, value);
 		//}
 
-		const response = fetch('http://localhost:4000/file', {
+		fetch('http://localhost:4000/file', {
 			method: 'POST',
 			body: formData
 		})
@@ -108,7 +107,6 @@
 {#if showPopup}
 	<div class="absolute left-0 top-0 w-full h-full bg-black/30">
 		<div class="center bg-slate-800 px-4 py-4 rounded-lg">
-			<h1>{JSON.stringify(metadata)}</h1>
 			<form class="flex flex-col gap-2">
 				<ButtonNoDefault
 					onClick={() => {
