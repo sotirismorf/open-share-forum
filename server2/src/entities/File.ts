@@ -21,6 +21,9 @@ export class File {
   @Column()
   filename: string
 
+  @Column()
+  type: string
+
   @Column({ default: "unknown"})
   filebasename: string
 

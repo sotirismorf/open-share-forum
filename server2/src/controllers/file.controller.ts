@@ -58,6 +58,7 @@ export async function newFile(request: Request, response: Response) {
     if (
       item.exams === undefined ||
       item.course === undefined ||
+      item.type === undefined ||
       item.semester === undefined ||
       item.exams === undefined ||
       item.exam_year === undefined ||
