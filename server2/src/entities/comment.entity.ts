@@ -5,14 +5,13 @@ import {
   CreateDateColumn,
   JoinColumn,
   ManyToOne,
-  OneToMany,
 } from 'typeorm'
 
 import { User } from './User'
-import { Comment } from './comment.entity'
+import { Post } from './Post'
 
 @Entity()
-export class Post {
+export class Comment {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -26,7 +25,7 @@ export class Post {
   @JoinColumn({ name: 'user_id' })
   user: User
 
-  @OneToMany(() => Comment, comment => comment.post)
-  //@JoinColumn({ name: 'post_id' })
-  comments: Comment[]
+  @ManyToOne(() => Post, post => post.comments)
+  @JoinColumn({ name: 'post_id' })
+  post: Post
 }
