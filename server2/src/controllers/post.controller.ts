@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import { AppDataSource } from '../AppDataSource'
-import { Comment } from '../entities/comment.entity'
+import { Post } from '../entities/Post'
 
-export async function getComment(request: Request, response: Response) {
-  AppDataSource.getRepository(Comment)
+export async function getPost(request: Request, response: Response) {
+  AppDataSource.getRepository(Post)
     .find({
       where: {
         id: parseInt(request.params.id),
@@ -18,12 +18,12 @@ export async function getComment(request: Request, response: Response) {
     })
 }
 
-export async function newComment(request: Request, response: Response) {
-  const commentRepository = AppDataSource.getRepository(Comment)
+export async function newPost(request: Request, response: Response) {
+  const repository = AppDataSource.getRepository(Post)
 
   try {
-    const item = commentRepository.create(request.body)
-    commentRepository.save(item)
+    const item = repository.create(request.body)
+    repository.save(item)
     response.send(item)
   } catch (err) {
     console.log(err)
