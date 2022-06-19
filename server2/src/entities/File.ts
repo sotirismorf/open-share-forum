@@ -4,52 +4,52 @@ import {
   Column,
   CreateDateColumn,
   ManyToOne,
-  JoinColumn
-} from 'typeorm'
+  JoinColumn,
+} from 'typeorm';
 
-import { Course } from './Course'
-import { User } from './User'
+import { Course } from './Course';
+import { User } from './User';
 
 @Entity()
 export class File {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @CreateDateColumn({ type: 'date' })
-  posted: Date
+  posted: Date;
 
   @Column()
-  filename: string
+  filename: string;
 
   @Column()
-  type: string
+  type: string;
 
-  @Column({ default: "unknown"})
-  filebasename: string
+  @Column({ default: 'unknown' })
+  filebasename: string;
 
-  @Column({ default: "ext"})
-  extension: string
+  @Column({ default: 'ext' })
+  extension: string;
 
   @ManyToOne(() => Course)
   @JoinColumn({ name: 'course_id' })
-  course: Course
+  course: Course;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
-  user: User
+  user: User;
 
   @Column()
-  semester: number
+  semester: number;
 
   @Column()
-  exams: boolean
+  exams: boolean;
 
   @Column()
-  exam_year: number
+  exam_year: number;
 
   @Column()
-  exam_period: number
+  exam_period: number;
 
   @Column()
-  has_solutions: boolean
+  has_solutions: boolean;
 }
