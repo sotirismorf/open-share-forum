@@ -11,7 +11,7 @@ const config = {
 		// hydrate the <div id="svelte"> element in src/app.html
 		//target: '#svelte'
     alias: {
-      $entities: 'src/utils'
+      $entities: '../server2/src/entities'
     },
 	},
   preprocess: sveltePreprocess(),
