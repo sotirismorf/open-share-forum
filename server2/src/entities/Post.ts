@@ -6,27 +6,33 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-} from 'typeorm'
+} from 'typeorm';
 
-import { User } from './User'
-import { Comment } from './comment.entity'
+import { User } from './User';
+import { Comment } from './comment.entity';
 
 @Entity()
 export class Post {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
-  @CreateDateColumn({ type: 'date' })
-  created: Date
+  @CreateDateColumn({ type: 'timestamp' })
+  created: Date;
 
-  @Column({ unique: true })
-  body: string
+  @Column()
+  title: string;
 
-  @ManyToOne(() => User, user => user.posts)
+  @Column()
+  body: string;
+
+  @ManyToOne(() => User, (user) => user.posts, { nullable: true })
   @JoinColumn({ name: 'user_id' })
-  user: User
+  user: User;
 
-  @OneToMany(() => Comment, comment => comment.post)
+  @Column({ default: 0 })
+  numOfComments: number;
+
+  @OneToMany(() => Comment, (comment) => comment.post)
   //@JoinColumn({ name: 'post_id' })
-  comments: Comment[]
+  comments: Comment[];
 }

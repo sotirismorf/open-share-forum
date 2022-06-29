@@ -7,6 +7,7 @@ import { AppDataSource } from './AppDataSource';
 import { appRoutes } from './routes/courseRoutes';
 import { fileRoutes } from './routes/fileRoutes';
 import { userRoutes } from './routes/userRoutes';
+import { postRoutes } from './routes/posts.route';
 
 AppDataSource.initialize()
   .then(() => {
@@ -23,7 +24,12 @@ AppDataSource.initialize()
         })
       );
 
-      const routes = [...appRoutes, ...fileRoutes, ...userRoutes];
+      const routes = [
+        ...appRoutes,
+        ...fileRoutes,
+        ...userRoutes,
+        ...postRoutes,
+      ];
 
       for (const route of routes) {
         app[route.method](route.path, route.action);
