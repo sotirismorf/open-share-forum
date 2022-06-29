@@ -13,7 +13,7 @@
 					items: await metadataPromise.json(),
 					currentCourse: await coursePromise.json(),
 					folder,
-					semester,
+					semester
 				}
 			};
 		}
@@ -25,29 +25,21 @@
 </script>
 
 <script lang="ts">
-	import Dropzone from "svelte-file-dropzone";
-
 	import Card from '$lib/Card.svelte';
-	import FileUpload from "../../../../lib/forms/FileUpload.svelte";
+	import FileUpload from '../../../../lib/forms/FileUpload.svelte';
 	import LinkPrimary from '$lib/LinkPrimary.svelte';
 	import Breadcrumb from '$lib/Breadcrumb.svelte';
 
-	import { course } from '../../../../lib/utils/auth'
-	import type { Course } from '../../../../../../server2/src/entities/Course'
-	//import type { Course } from '$entities/Course'
-
-	let files = {
-		accepted: [],
-		rejected: []
-	};
-
+	import { course } from '../../../../lib/utils/auth';
+	//import type { Course } from '../../../../../../server2/src/entities/Course'
+	import type { Course } from '$entities/Course';
 
 	export let items: any;
 	export let folder: string;
 	export let currentCourse: Course[];
 	export let semester: number;
 
-	$course = folder
+	$course = folder;
 
 	const breadcrumb = [
 		{
@@ -66,13 +58,6 @@
 			href: `vasikos/${semester}/${currentCourse[0].id}`
 		}
 	];
-
-	function handleFilesSelect(e) {
-		const { acceptedFiles, fileRejections } = e.detail;
-		console.log(e.detail.acceptedFiles)
-		files.accepted = [...files.accepted, ...acceptedFiles];
-		files.rejected = [...files.rejected, ...fileRejections];
-	}
 </script>
 
 <FileUpload />
@@ -94,10 +79,7 @@
 				📃 {item.filebasename}
 				<span class="italic text-green-400">.{item.extension}</span>
 			</a>
-			<LinkPrimary href="http://localhost:4000/download?id={item.id}">
-				Download
-			</LinkPrimary>
+			<LinkPrimary href="http://localhost:4000/download?id={item.id}">Download</LinkPrimary>
 		</div>
 	{/each}
 </Card>
-

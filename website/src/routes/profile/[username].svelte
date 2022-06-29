@@ -1,39 +1,35 @@
-<script context="module">
-	export async function load({ page }) {
-		const username = page.params.username;
+<script lang="ts" context="module">
+	export async function load({ params }) {
+		const username = params.username;
 
-		const res = await fetch(`http://localhost:4000/users/get/`+username);
+		const res = await fetch(`http://localhost:4000/user?username=${username}`);
+		const postsPromise = await fetch(`http://localhost:4000/posts?user.id=1`);
 
-		if (res.ok) {
+		if (res.ok && postsPromise.ok) {
 			const user = await res.json();
+			const posts = await postsPromise.json();
 
 			return {
-				props: {username, user}
+				props: { user, posts }
 			};
 		}
+		return {
+			status: res.status,
+			error: new Error(`Could not load folder`)
+		};
 	}
 </script>
 
-<script>
+<script lang="ts">
 	import Card from "$lib/Card.svelte";
 	import Post from "$lib/Post.svelte";
+	import type { User } from "$entities/User"
+	import type { Post as PostEntity } from "$entities/Post"
 
-	export let username;
-	export let user;
+	export let user: User[];
+	export let posts: PostEntity[];
+
 	console.log(user)
-	
-	async function getPosts() {
-		const res = await fetch(`http://localhost:4000/users/${user.id}/posts`);
-		const text = res.json();
-
-		if (res.ok) {
-			return text;
-		} else {
-			throw new Error(text)
-		}
-	}
-
-	let promise = getPosts();
 </script>
 
 <title>THMMY</title>
@@ -43,18 +39,11 @@
 			<div class="w-full mb-4 flex justify-between">
 				<h1 
 					class="text-2xl font-bold inline-block"
-				>{username}'s Posts</h1>
+				>{user[0].username}'s Posts</h1>
 			</div>
-
-			{#await promise}
-				<p class="h-80">...waiting</p>
-			{:then posts}
 				{#each posts as post}
 					<Post {post} />
 				{/each}
-			{:catch error}
-				<p style="color: red">{error.message}</p>
-			{/await}
 		</section>
 	</Card>
 </section>
