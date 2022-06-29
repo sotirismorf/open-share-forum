@@ -8,7 +8,7 @@
 
 	interface fileList {
 		accepted: File;
-		rejected: any
+		rejected: any;
 	}
 
 	let files: fileList = {
@@ -106,5 +106,10 @@
 			<p>{item.errors[0].code} {item.errors[0].message}</p>
 		{/each}
 	</ol>
-	<ButtonPrimary onClick={handleUpload}>Upload</ButtonPrimary>
+	<form>
+		<ButtonPrimary
+			disabled={files.accepted == null}
+			onClick={handleUpload}
+		>Upload</ButtonPrimary>
+	</form>
 </Card>
